@@ -1,52 +1,64 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import Header from './components/Header'
-import Main from './components/Main'
-import Footer from './components/Footer'
-import type { State } from './types/state'
+import Header from "./components/Header";
+import Main from "./components/Main";
+import Footer from "./components/Footer";
+import type { State } from "./types/state";
 
 function App() {
   const [appState, setAppState] = useState<State>({
     images: [],
     selected: undefined,
-    prompt: '',
-    apiKey: ''
-  })
+    apiKey: "",
+  });
 
   const handleAddImage = (file: File) => {
     const newImage = {
       id: crypto.randomUUID(),
       file,
       previewUrl: URL.createObjectURL(file),
-      caption: '',
-      status: 'idle' as const,
-      error: ''
-    }
+      caption: "",
+      status: "idle" as const,
+      error: "",
+    };
 
-    setAppState(prev => ({
+    setAppState((prev) => ({
       ...prev,
       images: [...prev.images, newImage],
-      selected: prev.images.length
-    }))
-  }
+      selected: prev.images.length,
+    }));
+  };
+
+  const handleSetPrompt = (prompt: string) => {
+    setAppState((prev) => ({
+      ...prev,
+      images: prev.images.map((img, i) =>
+        i === prev.selected ? { ...img, caption: prompt } : img,
+      ),
+    }));
+  };
 
   const handleSelectImage = (index: number) => {
-    setAppState(prev => ({
+    setAppState((prev) => ({
       ...prev,
-      selected: index
-    }))
-  }
-
+      selected: index,
+    }));
+  };
 
   return (
     <>
       <div className="h-screen grid grid-rows-[auto_1fr_auto] bg-zinc-950 text-amber-600">
         <Header />
-        <Main state={appState} onAddImage={handleAddImage} onSelectImage={handleSelectImage} />
+        <Main
+          state={appState}
+          onAddImage={handleAddImage}
+          onSelectImage={handleSelectImage}
+          onSetPrompt={handleSetPrompt}
+        />
         <Footer />
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

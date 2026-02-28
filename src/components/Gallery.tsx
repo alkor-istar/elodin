@@ -1,6 +1,7 @@
 import type { ImageType } from "../types/image";
 import { useRef } from "react";
 import { type ChangeEvent } from "react";
+import RetroButton from "./RetroButton";
 
 type GalleryProps = {
   images: ImageType[];
@@ -30,12 +31,12 @@ const Gallery = ({
     event.target.value = "";
   };
   return (
-    <aside className="border-r bg-slate-500 flex min-h-0 flex-col h-full">
+    <aside className="border-r bg-slate-600 flex min-h-0 flex-col h-full">
       <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-2">
         {images.map((img, i) => (
           <button
             key={i}
-            className="w-full aspect-square rounded-md overflow-hidden border
+            className="w-full aspect-square rounded-md  overflow-hidden border
                    hover:ring-2 hover:ring-blue-300
                    data-[active=true]:ring-2 data-[active=true]:ring-blue-500"
             data-active={i === selected}
@@ -54,12 +55,11 @@ const Gallery = ({
         onChange={handleFileChange}
       />
       <div border-t>
-        <button
-          className="w-full p-2 text-sm text-slate-700 hover:bg-slate-200"
+        <RetroButton
+          label="Upload Files"
+          className="w-full p-2"
           onClick={handleClick}
-        >
-          Upload Files
-        </button>
+        />
       </div>
     </aside>
   );

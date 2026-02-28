@@ -3,6 +3,7 @@ import { useState } from "react";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
+import { downloadImagesAndCaptionsZip } from "./helpers/downloadZip";
 import type { State } from "./types/state";
 
 function App() {
@@ -45,6 +46,10 @@ function App() {
     }));
   };
 
+  const handleDownloadZip = () => {
+    downloadImagesAndCaptionsZip(appState.images);
+  };
+
   return (
     <>
       <div className="h-screen grid grid-rows-[auto_1fr_auto] bg-zinc-950 text-amber-600">
@@ -55,7 +60,10 @@ function App() {
           onSelectImage={handleSelectImage}
           onSetPrompt={handleSetPrompt}
         />
-        <Footer />
+        <Footer
+          onDownloadZip={handleDownloadZip}
+          numberOfImages={appState.images.length}
+        />
       </div>
     </>
   );

@@ -9,11 +9,13 @@ type EditorProps = {
   selected: number | undefined;
   images: ImageType[];
   onSetCaption: (caption: string) => void;
+  handleGenerateCaption: () => void;
   onSelectImage: (index: number) => void;
 };
 
 const Editor = ({
   onAddImage,
+  handleGenerateCaption,
   selected,
   images,
   onSetCaption,
@@ -80,7 +82,10 @@ const Editor = ({
           images={images}
           onSetCaption={onSetCaption}
         />
-        <Toolbar onPasteFromClipboard={handlePasteFromClipboard} />
+        <Toolbar
+          onPasteFromClipboard={handlePasteFromClipboard}
+          handleGenerateCaption={handleGenerateCaption}
+        />
       </div>
     </main>
   );

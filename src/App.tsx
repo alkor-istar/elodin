@@ -5,6 +5,7 @@ import Main from "./components/Main";
 import Footer from "./components/Footer";
 import ConfigPanel from "./components/ConfigPanel";
 import appReducer, { initialState } from "./state/appReducer";
+import { generateCaptionWithGemini } from "./services/geminiCaption";
 
 function App() {
   const [showConfigPanel, setShowConfigPanel] = useState(false);
@@ -27,7 +28,16 @@ function App() {
   const handleSetApiKey = (apiKey: string) =>
     dispatch({ type: "SET_API_KEY", payload: apiKey });
   const handleDownloadZip = () => dispatch({ type: "DOWNLOAD_ZIP" });
-
+  const handleGenerateCaption = async () => {
+    dispatch({ type: "SET_STATUS", payload: "Generating caption..." });
+    const caption = await generateCaptionWithGemini({
+      apiKey: appState.apiKey,
+      prompt: appState.prompt,
+      file: appState.images[appState.selected ?? 0]?.file,
+    });
+    dispatch({ type: "SET_STATUS", payload: "Caption generated" });
+    dispatch({ type: "SET_CAPTION", payload: caption });
+  };
   useEffect(() => {
     const onPaste = (event: ClipboardEvent) => {
       const items = event.clipboardData?.items;
@@ -63,12 +73,14 @@ function App() {
       </div>
       <Main
         state={appState}
+        handleGenerateCaption={handleGenerateCaption}
         onAddImage={handleAddImage}
         onSelectImage={handleSelectImage}
         onSetCaption={handleSetCaption}
       />
       <Footer
         onDownloadZip={handleDownloadZip}
+        status={appState.status}
         numberOfImages={appState.images.length}
       />
     </div>

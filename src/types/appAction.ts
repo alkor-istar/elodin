@@ -4,4 +4,5 @@ export type AppAction =
   | { type: "ADD_IMAGE"; payload: File }
   | { type: "SET_CAPTION"; payload: string }
   | { type: "SELECT_IMAGE"; payload: number }
-  | { type: "DOWNLOAD_ZIP" };
+  | { type: "DOWNLOAD_ZIP" }
+  | { type: "SET_STATUS"; payload: string };

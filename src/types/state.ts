@@ -5,4 +5,5 @@ export type State = {
   selected?: number;
   apiKey: string;
   prompt: string;
+  status: string;
 };

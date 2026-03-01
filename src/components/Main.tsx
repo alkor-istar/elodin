@@ -7,6 +7,7 @@ type MainProps = {
   onAddImage: (file: File) => void;
   onSelectImage: (index: number) => void;
   onSetCaption: (caption: string) => void;
+  handleGenerateCaption: () => void;
 };
 
 const Main = ({
@@ -14,6 +15,7 @@ const Main = ({
   onAddImage,
   onSelectImage,
   onSetCaption,
+  handleGenerateCaption,
 }: MainProps) => {
   const images = state.images;
   const selected = state.selected;
@@ -28,6 +30,7 @@ const Main = ({
       />
       <Editor
         onAddImage={onAddImage}
+        handleGenerateCaption={handleGenerateCaption}
         onSelectImage={onSelectImage}
         selected={selected}
         images={images}

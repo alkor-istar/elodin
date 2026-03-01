@@ -3,13 +3,14 @@ import type { State } from "../types/state";
 
 type FooterProps = {
   onDownloadZip: () => void;
+  status: string;
   numberOfImages: number;
 };
 
-const Footer = ({ onDownloadZip, numberOfImages }: FooterProps) => {
+const Footer = ({ onDownloadZip, numberOfImages, status }: FooterProps) => {
   return (
     <footer className="flex items-center justify-between px-4 py-2 border-t border-amber-700 bg-zinc-950">
-      <span className="text-amber-600">Ready</span>
+      <span className="text-amber-600">{status}</span>
 
       <RetroButton
         label="Download ZIP"

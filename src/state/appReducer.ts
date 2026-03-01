@@ -1,12 +1,14 @@
 import type { State } from "../types/state";
 import type { AppAction } from "../types/appAction";
 import { downloadImagesAndCaptionsZip } from "../helpers/downloadZip";
+import { generateCaptionWithGemini } from "../services/geminiCaption";
 
 export const initialState: State = {
   images: [],
   selected: undefined,
   apiKey: "",
   prompt: "",
+  status: "Ready",
 };
 
 function appReducer(state: State, action: AppAction): State {
@@ -47,6 +49,9 @@ function appReducer(state: State, action: AppAction): State {
     case "DOWNLOAD_ZIP":
       downloadImagesAndCaptionsZip(state.images);
       return state;
+
+    case "SET_STATUS":
+      return { ...state, status: action.payload };
 
     default:
       return state;

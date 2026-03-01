@@ -3,7 +3,7 @@ import RetroButton from "./RetroButton";
 type ToolbarProps = {
   disabled?: boolean;
   onPasteFromClipboard?: () => void;
-  onGenerate?: () => void;
+  handleGenerateCaption?: () => void;
   onCopy?: () => void;
   onClear?: () => void;
 };
@@ -11,6 +11,7 @@ type ToolbarProps = {
 const Toolbar = ({
   disabled,
   onPasteFromClipboard,
+  handleGenerateCaption,
   onCopy,
   onClear,
 }: ToolbarProps) => {
@@ -23,7 +24,11 @@ const Toolbar = ({
       />
       <RetroButton label="Crop" disabled={disabled} onClick={onCopy} />
       <RetroButton label="Resize" disabled={disabled} onClick={onClear} />
-      <RetroButton label="Auto Caption" disabled={disabled} onClick={onClear} />
+      <RetroButton
+        label="Auto Caption"
+        disabled={disabled}
+        onClick={handleGenerateCaption}
+      />
     </aside>
   );
 };

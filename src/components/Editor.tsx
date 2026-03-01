@@ -34,6 +34,35 @@ const Editor = ({
     if (nextIndex !== selected) onSelectImage(nextIndex);
   };
 
+  const handlePasteFromClipboard = async () => {
+    if (!navigator.clipboard?.read) {
+      console.warn("Clipboard read API not supported in this browser.");
+      return;
+    }
+
+    try {
+      const items = await navigator.clipboard.read();
+
+      for (const item of items) {
+        const imageType = item.types.find((type) => type.startsWith("image/"));
+        if (!imageType) continue;
+
+        const blob = await item.getType(imageType);
+        const ext = imageType.split("/")[1] ?? "png";
+        const file = new File([blob], `clipboard-${Date.now()}.${ext}`, {
+          type: imageType,
+        });
+
+        onAddImage(file); // reducer will add + auto-select it
+        return; // stop after first image
+      }
+
+      console.info("Clipboard has no image.");
+    } catch (error) {
+      console.error("Failed to read clipboard:", error);
+    }
+  };
+
   return (
     <main className="grid h-full min-h-0 grid-rows-[1fr_auto]">
       <div
@@ -51,7 +80,7 @@ const Editor = ({
           images={images}
           onSetCaption={onSetCaption}
         />
-        <Toolbar />
+        <Toolbar onPasteFromClipboard={handlePasteFromClipboard} />
       </div>
     </main>
   );

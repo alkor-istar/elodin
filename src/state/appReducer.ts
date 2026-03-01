@@ -1,13 +1,13 @@
 import type { State } from "../types/state";
 import type { AppAction } from "../types/appAction";
 import { downloadImagesAndCaptionsZip } from "../helpers/downloadZip";
-import { generateCaptionWithGemini } from "../services/geminiCaption";
 
 export const initialState: State = {
   images: [],
   selected: undefined,
   apiKey: "",
-  prompt: "",
+  prompt:
+    "You're a language model that produces T5 flux compliant prompts for generating images, give detailed descriptions in 100 to 200 words describing subject, style, mood, feel free to add details to make the image more vibrant. Describe the attached image ",
   status: "Ready",
 };
 
@@ -36,10 +36,11 @@ function appReducer(state: State, action: AppAction): State {
     }
 
     case "SET_CAPTION":
+      const { caption, index } = action.payload;
       return {
         ...state,
         images: state.images.map((img, i) =>
-          i === state.selected ? { ...img, caption: action.payload } : img,
+          i === index ? { ...img, caption: caption } : img,
         ),
       };
 

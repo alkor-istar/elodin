@@ -22,7 +22,10 @@ function App() {
   const handleSelectImage = (index: number) =>
     dispatch({ type: "SELECT_IMAGE", payload: index });
   const handleSetCaption = (caption: string) =>
-    dispatch({ type: "SET_CAPTION", payload: caption });
+    dispatch({
+      type: "SET_CAPTION",
+      payload: { caption, index: appState.selected ?? 0 },
+    });
   const handleSetConfigPrompt = (prompt: string) =>
     dispatch({ type: "SET_CONFIG_PROMPT", payload: prompt });
   const handleSetApiKey = (apiKey: string) =>
@@ -36,7 +39,30 @@ function App() {
       file: appState.images[appState.selected ?? 0]?.file,
     });
     dispatch({ type: "SET_STATUS", payload: "Caption generated" });
-    dispatch({ type: "SET_CAPTION", payload: caption });
+    dispatch({
+      type: "SET_CAPTION",
+      payload: { caption, index: appState.selected ?? 0 },
+    });
+  };
+  const handleGenerateAllCaptions = async () => {
+    const totalImages = appState.images.length;
+    for (let index = 0; index < totalImages; index++) {
+      const image = appState.images[index];
+      dispatch({
+        type: "SET_STATUS",
+        payload: `Generating caption for image ${index + 1} of ${totalImages}`,
+      });
+      const caption = await generateCaptionWithGemini({
+        apiKey: appState.apiKey,
+        prompt: appState.prompt,
+        file: image.file,
+      });
+      dispatch({
+        type: "SET_CAPTION",
+        payload: { caption, index: index },
+      });
+    }
+    dispatch({ type: "SET_STATUS", payload: "All captions generated" });
   };
   useEffect(() => {
     const onPaste = (event: ClipboardEvent) => {
@@ -80,6 +106,7 @@ function App() {
       />
       <Footer
         onDownloadZip={handleDownloadZip}
+        handleGenerateAllCaptions={handleGenerateAllCaptions}
         status={appState.status}
         numberOfImages={appState.images.length}
       />

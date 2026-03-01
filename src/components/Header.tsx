@@ -13,7 +13,7 @@ const Header = ({ prompt, onEditConfig }: HeaderProps) => {
       </h1>
 
       <div className="flex items-center gap-2">
-        <span className="text-xs text-slate-500 truncate max-w-[240px]">
+        <span className="text-slate-500 truncate max-w-[240px]">
           Prompt: {prompt}
         </span>
 

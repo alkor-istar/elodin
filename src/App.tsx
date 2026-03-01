@@ -1,71 +1,58 @@
-import { useState } from "react";
+import { useState, useReducer } from "react";
 
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
-import { downloadImagesAndCaptionsZip } from "./helpers/downloadZip";
-import type { State } from "./types/state";
+import ConfigPanel from "./components/ConfigPanel";
+import appReducer, { initialState } from "./state/appReducer";
 
 function App() {
-  const [appState, setAppState] = useState<State>({
-    images: [],
-    selected: undefined,
-    apiKey: "",
-  });
-
-  const handleAddImage = (file: File) => {
-    const newImage = {
-      id: crypto.randomUUID(),
-      file,
-      previewUrl: URL.createObjectURL(file),
-      caption: "",
-      status: "idle" as const,
-      error: "",
-    };
-
-    setAppState((prev) => ({
-      ...prev,
-      images: [...prev.images, newImage],
-      selected: prev.images.length,
-    }));
+  const [showConfigPanel, setShowConfigPanel] = useState(false);
+  const handleCloseConfigPanel = () => {
+    setShowConfigPanel(false);
+  };
+  const handleEditConfig = () => {
+    setShowConfigPanel(!showConfigPanel);
   };
 
-  const handleSetPrompt = (prompt: string) => {
-    setAppState((prev) => ({
-      ...prev,
-      images: prev.images.map((img, i) =>
-        i === prev.selected ? { ...img, caption: prompt } : img,
-      ),
-    }));
-  };
-
-  const handleSelectImage = (index: number) => {
-    setAppState((prev) => ({
-      ...prev,
-      selected: index,
-    }));
-  };
-
-  const handleDownloadZip = () => {
-    downloadImagesAndCaptionsZip(appState.images);
-  };
+  const [appState, dispatch] = useReducer(appReducer, initialState);
+  const handleAddImage = (file: File) =>
+    dispatch({ type: "ADD_IMAGE", payload: file });
+  const handleSelectImage = (index: number) =>
+    dispatch({ type: "SELECT_IMAGE", payload: index });
+  const handleSetCaption = (caption: string) =>
+    dispatch({ type: "SET_CAPTION", payload: caption });
+  const handleSetConfigPrompt = (prompt: string) =>
+    dispatch({ type: "SET_CONFIG_PROMPT", payload: prompt });
+  const handleSetApiKey = (apiKey: string) =>
+    dispatch({ type: "SET_API_KEY", payload: apiKey });
+  const handleDownloadZip = () => dispatch({ type: "DOWNLOAD_ZIP" });
 
   return (
-    <>
-      <div className="h-screen grid grid-rows-[auto_1fr_auto] bg-zinc-950 text-amber-600">
-        <Header />
-        <Main
-          state={appState}
-          onAddImage={handleAddImage}
-          onSelectImage={handleSelectImage}
-          onSetPrompt={handleSetPrompt}
-        />
-        <Footer
-          onDownloadZip={handleDownloadZip}
-          numberOfImages={appState.images.length}
-        />
+    <div className="h-screen grid grid-rows-[auto_1fr_auto] bg-zinc-950 text-amber-600">
+      <div>
+        <Header prompt={appState.prompt} onEditConfig={handleEditConfig} />
+        {showConfigPanel && (
+          <ConfigPanel
+            prompt={appState.prompt}
+            apiKey={appState.apiKey}
+            onPromptChange={handleSetConfigPrompt}
+            onApiKeyChange={handleSetApiKey}
+            onClose={handleCloseConfigPanel}
+          />
+        )}
       </div>
-    </>
+      <Main
+        state={appState}
+        onAddImage={handleAddImage}
+        onSelectImage={handleSelectImage}
+        onSetCaption={handleSetCaption}
+      />
+      <Footer
+        onDownloadZip={handleDownloadZip}
+        numberOfImages={appState.images.length}
+      />
+    </div>
   );
 }
 

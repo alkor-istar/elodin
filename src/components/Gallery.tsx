@@ -31,8 +31,8 @@ const Gallery = ({
     event.target.value = "";
   };
   return (
-    <aside className="border-r bg-slate-600 flex min-h-0 flex-col h-full">
-      <div className="flex-1 min-h-0 overflow-y-auto p-2 space-y-2">
+    <aside className="border-r bg-slate-600 flex min-h-0 flex-col h-full border-amber-500">
+      <div className="retro-scrollbar flex-1 min-h-0 overflow-y-auto p-2 space-y-2 ">
         {images.map((img, i) => (
           <button
             key={i}

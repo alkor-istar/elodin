@@ -45,4 +45,42 @@ body,
   .retro-btn:disabled {
     @apply opacity-50 cursor-not-allowed;
   }
+
+  .retro-scrollbar {
+    /* Firefox */
+    scrollbar-width: auto;
+    scrollbar-color: #d08a1f #1e293b; /* thumb track */
+  }
+
+  /* Chrome / Edge / Safari */
+  .retro-scrollbar::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  /* Chrome / Edge / Safari */
+  .retro-scrollbar::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  .retro-scrollbar::-webkit-scrollbar-track {
+    background: #1e293b;
+  }
+
+  .retro-scrollbar::-webkit-scrollbar-thumb {
+    background: #d08a1f;
+    border-radius: 0; /* remove pill look */
+    box-shadow:
+      inset 2px 2px 0 #f6c26b,
+      /* top + left highlight */ inset -2px -2px 0 #7a4d00; /* bottom + right shadow */
+  }
+
+  .retro-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #e6a33f;
+  }
+
+  .retro-scrollbar::-webkit-scrollbar-thumb:active {
+    box-shadow:
+      inset 2px 2px 0 #7a4d00,
+      /* invert bevel when pressed */ inset -2px -2px 0 #f6c26b;
+  }
 }

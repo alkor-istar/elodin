@@ -4,4 +4,5 @@ export type State = {
   images: ImageType[];
   selected?: number;
   apiKey: string;
+  prompt: string;
 };

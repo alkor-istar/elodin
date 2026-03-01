@@ -1,6 +1,11 @@
 import RetroButton from "./RetroButton";
 
-const Header = () => {
+type HeaderProps = {
+  prompt: string;
+  onEditConfig: () => void;
+};
+
+const Header = ({ prompt, onEditConfig }: HeaderProps) => {
   return (
     <header className="flex items-center justify-between px-4 py-2 border-b border-orange-500 bg-zinc-950">
       <h1 className="text-lg font-semibold text-amber-600">
@@ -9,10 +14,10 @@ const Header = () => {
 
       <div className="flex items-center gap-2">
         <span className="text-xs text-slate-500 truncate max-w-[240px]">
-          Prompt: concise caption
+          Prompt: {prompt}
         </span>
 
-        <RetroButton label="Edit config" />
+        <RetroButton label="Edit config" onClick={onEditConfig} />
       </div>
     </header>
   );

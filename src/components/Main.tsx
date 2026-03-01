@@ -6,10 +6,15 @@ type MainProps = {
   state: State;
   onAddImage: (file: File) => void;
   onSelectImage: (index: number) => void;
-  onSetPrompt: (prompt: string) => void;
+  onSetCaption: (caption: string) => void;
 };
 
-const Main = ({ state, onAddImage, onSelectImage, onSetPrompt }: MainProps) => {
+const Main = ({
+  state,
+  onAddImage,
+  onSelectImage,
+  onSetCaption,
+}: MainProps) => {
   const images = state.images;
   const selected = state.selected;
 
@@ -23,9 +28,10 @@ const Main = ({ state, onAddImage, onSelectImage, onSetPrompt }: MainProps) => {
       />
       <Editor
         onAddImage={onAddImage}
+        onSelectImage={onSelectImage}
         selected={selected}
         images={images}
-        onSetPrompt={onSetPrompt}
+        onSetCaption={onSetCaption}
       />
     </div>
   );

@@ -19,7 +19,10 @@ const Image = ({ onAddImage, currentImage }: ImageProps) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    if (displayedImage?.id === currentImage?.id) return;
+    const isSameImage =
+      displayedImage?.id === currentImage?.id &&
+      displayedImage?.previewUrl === currentImage?.previewUrl;
+    if (isSameImage) return;
 
     // Trigger fade-out asynchronously to avoid synchronous setState in effect.
     const fadeOutTimer = globalThis.setTimeout(() => {
@@ -36,7 +39,13 @@ const Image = ({ onAddImage, currentImage }: ImageProps) => {
       globalThis.clearTimeout(fadeOutTimer);
       globalThis.clearTimeout(swapTimer);
     };
-  }, [currentImage, displayedImage?.id]);
+  }, [
+    currentImage?.id,
+    currentImage?.previewUrl,
+    displayedImage?.id,
+    displayedImage?.previewUrl,
+    currentImage,
+  ]);
 
   const handleClick = () => fileInputRef.current?.click();
 

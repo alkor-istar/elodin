@@ -11,6 +11,7 @@ type ToolbarProps = {
   onEnterCropMode?: () => void;
   onApplyCrop?: () => void;
   onCancelCrop?: () => void;
+  onResizeImage?: () => void;
   onCropWidthChange: (width: number) => void;
   onCropHeightChange: (height: number) => void;
   onLockCropAspectChange: (locked: boolean) => void;
@@ -26,6 +27,7 @@ const Toolbar = ({
   onEnterCropMode,
   onApplyCrop,
   onCancelCrop,
+  onResizeImage,
   onCropWidthChange,
   onCropHeightChange,
   onLockCropAspectChange,
@@ -46,7 +48,7 @@ const Toolbar = ({
         onHeightChange={onCropHeightChange}
         onLockAspectChange={onLockCropAspectChange}
       />
-      <RetroButton label="Resize" disabled={disabled} />
+      <RetroButton label="Resize" disabled={disabled} onClick={onResizeImage} />
       <RetroButton
         label="Auto Caption"
         disabled={disabled}

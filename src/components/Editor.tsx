@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Cropper from "react-easy-crop";
 import type { Area } from "react-easy-crop";
-import { cropImage } from "../helpers/cropImage";
+import { cropImage, resizeImage } from "../helpers/cropImage";
 import type { ImageType } from "../types/image";
 import Image from "./Image";
 import Caption from "./Caption";
@@ -118,6 +118,35 @@ const Editor = ({
     resetCropSession();
   };
 
+  const handleResizeImage = async () => {
+    if (!currentImage) return;
+    try {
+      setIsApplyingCrop(true);
+      const mimeType = currentImage.file.type || "image/png";
+      const extension = mimeType.split("/")[1] ?? "png";
+      const baseName = currentImage.file.name.replace(/\.[^.]+$/, "");
+      const resizedBlob = await resizeImage(currentImage.previewUrl, {
+        outputWidth: cropWidth,
+        outputHeight: cropHeight,
+        mimeType,
+      });
+      const resizedFile = new File(
+        [resizedBlob],
+        `${baseName}-resized.${extension}`,
+        { type: mimeType, lastModified: Date.now() },
+      );
+      onReplaceSelectedImage(resizedFile);
+      if (isCropMode) {
+        setIsCropMode(false);
+        resetCropSession();
+      }
+    } catch (error) {
+      console.error("Failed to resize image:", error);
+    } finally {
+      setIsApplyingCrop(false);
+    }
+  };
+
   const handleCropWidthChange = (width: number) => {
     setCropWidth(width);
     if (!lockCropAspect) return;
@@ -179,6 +208,9 @@ const Editor = ({
             void handleApplyCrop();
           }}
           onCancelCrop={handleCancelCrop}
+          onResizeImage={() => {
+            void handleResizeImage();
+          }}
           onCropWidthChange={handleCropWidthChange}
           onCropHeightChange={handleCropHeightChange}
           onLockCropAspectChange={handleLockCropAspectChange}

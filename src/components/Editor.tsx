@@ -7,8 +7,8 @@ import Image from "./Image";
 import Caption from "./Caption";
 import Toolbar from "./Toolbar";
 
-const DEFAULT_CROP_WIDTH = 1024;
-const DEFAULT_CROP_HEIGHT = 1024;
+const DEFAULT_CROP_WIDTH = 512;
+const DEFAULT_CROP_HEIGHT = 768;
 
 type EditorProps = {
   onAddImage: (file: File) => void;
@@ -125,11 +125,15 @@ const Editor = ({
       const mimeType = currentImage.file.type || "image/png";
       const extension = mimeType.split("/")[1] ?? "png";
       const baseName = currentImage.file.name.replace(/\.[^.]+$/, "");
-      const croppedBlob = await cropImage(currentImage.previewUrl, croppedAreaPixels, {
-        outputWidth: cropWidth,
-        outputHeight: cropHeight,
-        mimeType,
-      });
+      const croppedBlob = await cropImage(
+        currentImage.previewUrl,
+        croppedAreaPixels,
+        {
+          outputWidth: cropWidth,
+          outputHeight: cropHeight,
+          mimeType,
+        },
+      );
       const croppedFile = new File(
         [croppedBlob],
         `${baseName}-cropped.${extension}`,
@@ -231,7 +235,9 @@ const Editor = ({
         <Toolbar
           handleGenerateCaption={handleGenerateCaption}
           disabled={currentImage === undefined || isApplyingCrop}
-          selectedImageNumber={selected === undefined ? undefined : selected + 1}
+          selectedImageNumber={
+            selected === undefined ? undefined : selected + 1
+          }
           imageWidth={currentImageDimensions?.width}
           imageHeight={currentImageDimensions?.height}
           isCropMode={isCropMode}

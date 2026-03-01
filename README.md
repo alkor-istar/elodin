@@ -2,6 +2,10 @@
 
 Elodin is a frontend only React + Vite app for generating image captions with Google Gemini.
 
+## Test the App
+
+Use the live app here: https://elodin-caption.vercel.app/
+
 ## Requirements
 
 - Node.js 18+ (Node.js 20+ recommended)

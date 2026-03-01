@@ -77,7 +77,7 @@ const Image = ({ onAddImage, currentImage }: ImageProps) => {
           <img
             src={displayedImage.previewUrl}
             alt="Selected"
-            className={`max-w-full max-h-full object-contain rounded-lg
+            className={`w-full h-full object-contain rounded-lg
                         transition-opacity duration-200 ease-in-out
                         ${visible ? "opacity-100" : "opacity-0"}`}
           />

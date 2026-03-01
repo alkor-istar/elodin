@@ -5,6 +5,7 @@ import type { State } from "../types/state";
 type MainProps = {
   state: State;
   onAddImage: (file: File) => void;
+  onReplaceSelectedImage: (file: File) => void;
   onSelectImage: (index: number) => void;
   onSetCaption: (caption: string) => void;
   handleGenerateCaption: () => void;
@@ -13,6 +14,7 @@ type MainProps = {
 const Main = ({
   state,
   onAddImage,
+  onReplaceSelectedImage,
   onSelectImage,
   onSetCaption,
   handleGenerateCaption,
@@ -30,6 +32,7 @@ const Main = ({
       />
       <Editor
         onAddImage={onAddImage}
+        onReplaceSelectedImage={onReplaceSelectedImage}
         handleGenerateCaption={handleGenerateCaption}
         onSelectImage={onSelectImage}
         selected={selected}

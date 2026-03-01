@@ -35,7 +35,23 @@ function appReducer(state: State, action: AppAction): State {
       };
     }
 
-    case "SET_CAPTION":
+    case "REPLACE_IMAGE_FILE": {
+      const { index, file } = action.payload;
+      return {
+        ...state,
+        images: state.images.map((img, i) => {
+          if (i !== index) return img;
+          URL.revokeObjectURL(img.previewUrl);
+          return {
+            ...img,
+            file,
+            previewUrl: URL.createObjectURL(file),
+          };
+        }),
+      };
+    }
+
+    case "SET_CAPTION": {
       const { caption, index } = action.payload;
       return {
         ...state,
@@ -43,6 +59,7 @@ function appReducer(state: State, action: AppAction): State {
           i === index ? { ...img, caption: caption } : img,
         ),
       };
+    }
 
     case "SELECT_IMAGE":
       return { ...state, selected: action.payload };

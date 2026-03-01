@@ -19,6 +19,13 @@ function App() {
   const [appState, dispatch] = useReducer(appReducer, initialState);
   const handleAddImage = (file: File) =>
     dispatch({ type: "ADD_IMAGE", payload: file });
+  const handleReplaceSelectedImage = (file: File) => {
+    if (appState.selected === undefined) return;
+    dispatch({
+      type: "REPLACE_IMAGE_FILE",
+      payload: { index: appState.selected, file },
+    });
+  };
   const handleSelectImage = (index: number) =>
     dispatch({ type: "SELECT_IMAGE", payload: index });
   const handleSetCaption = (caption: string) =>
@@ -101,6 +108,7 @@ function App() {
         state={appState}
         handleGenerateCaption={handleGenerateCaption}
         onAddImage={handleAddImage}
+        onReplaceSelectedImage={handleReplaceSelectedImage}
         onSelectImage={handleSelectImage}
         onSetCaption={handleSetCaption}
       />

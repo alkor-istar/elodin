@@ -20,7 +20,7 @@ body,
 
 @layer components {
   .retro-btn {
-    @apply bg-[#d08a1f] px-5 py-1 font-bold text-slate-900;
+    @apply bg-[#d08a1f] px-5 py-1 text-slate-900;
     border-top: 3px solid #f6c26b;
     border-left: 3px solid #f6c26b;
     border-bottom: 3px solid #7a4d00;
@@ -38,7 +38,18 @@ body,
     border-right: 3px solid #f6c26b;
   }
 
+  .retro-btn[aria-pressed="true"] {
+    border-top: 3px solid #7a4d00;
+    border-left: 3px solid #7a4d00;
+    border-bottom: 3px solid #f6c26b;
+    border-right: 3px solid #f6c26b;
+  }
+
   .retro-btn:active .label {
+    transform: translate(2px, 2px);
+  }
+
+  .retro-btn[aria-pressed="true"] .label {
     transform: translate(2px, 2px);
   }
 

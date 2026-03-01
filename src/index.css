@@ -94,4 +94,15 @@ body,
       inset 2px 2px 0 #7a4d00,
       /* invert bevel when pressed */ inset -2px -2px 0 #f6c26b;
   }
+
+  .no-spinner {
+    -moz-appearance: textfield; /* Firefox */
+    appearance: textfield;
+  }
+
+  .no-spinner::-webkit-outer-spin-button,
+  .no-spinner::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }

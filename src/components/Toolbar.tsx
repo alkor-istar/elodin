@@ -1,9 +1,13 @@
 import RetroButton from "./RetroButton";
 import InputButton from "./InputButton";
+import Monitor from "./Monitor";
 
 type ToolbarProps = {
   disabled?: boolean;
   handleGenerateCaption?: () => void;
+  selectedImageNumber?: number;
+  imageWidth?: number;
+  imageHeight?: number;
   isCropMode?: boolean;
   cropWidth: number;
   cropHeight: number;
@@ -20,6 +24,9 @@ type ToolbarProps = {
 const Toolbar = ({
   disabled,
   handleGenerateCaption,
+  selectedImageNumber,
+  imageWidth,
+  imageHeight,
   isCropMode,
   cropWidth,
   cropHeight,
@@ -53,6 +60,11 @@ const Toolbar = ({
         label="Auto Caption"
         disabled={disabled}
         onClick={handleGenerateCaption}
+      />
+      <Monitor
+        selectedImageNumber={selectedImageNumber}
+        imageWidth={imageWidth}
+        imageHeight={imageHeight}
       />
     </aside>
   );

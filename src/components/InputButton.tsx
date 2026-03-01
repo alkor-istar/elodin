@@ -51,7 +51,7 @@ const InputButton = ({
           <span>W:</span>
           <input
             type="number"
-            className="w-full px-1 py-0.5 bg-slate-800 border border-slate-500 rounded text-slate-100"
+            className="no-spinner w-full px-1 py-0.5 bg-slate-800 border border-slate-500 rounded text-slate-100"
             min={1}
             value={width}
             onChange={(event) => onWidthChange(parseDimensionValue(event))}
@@ -62,7 +62,7 @@ const InputButton = ({
           <span>H:</span>
           <input
             type="number"
-            className="w-full px-1 py-0.5 bg-slate-800 border border-slate-500 rounded text-slate-100"
+            className="no-spinner w-full px-1 py-0.5 bg-slate-800 border border-slate-500 rounded text-slate-100"
             min={1}
             value={height}
             onChange={(event) => onHeightChange(parseDimensionValue(event))}

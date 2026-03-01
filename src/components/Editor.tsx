@@ -36,6 +36,9 @@ const Editor = ({
   const [cropWidth, setCropWidth] = useState(DEFAULT_CROP_WIDTH);
   const [cropHeight, setCropHeight] = useState(DEFAULT_CROP_HEIGHT);
   const [lockCropAspect, setLockCropAspect] = useState(true);
+  const [currentImageDimensions, setCurrentImageDimensions] = useState<
+    { width: number; height: number } | undefined
+  >(undefined);
   const [lockedAspectRatio, setLockedAspectRatio] = useState(
     DEFAULT_CROP_WIDTH / DEFAULT_CROP_HEIGHT,
   );
@@ -54,6 +57,35 @@ const Editor = ({
     setIsApplyingCrop(false);
     resetCropSession();
   }, [currentImage?.id, resetCropSession]);
+
+  useEffect(() => {
+    if (!currentImage) {
+      setCurrentImageDimensions(undefined);
+      return;
+    }
+
+    let isCancelled = false;
+    const image = new globalThis.Image();
+
+    image.onload = () => {
+      if (isCancelled) return;
+      setCurrentImageDimensions({
+        width: image.naturalWidth,
+        height: image.naturalHeight,
+      });
+    };
+
+    image.onerror = () => {
+      if (isCancelled) return;
+      setCurrentImageDimensions(undefined);
+    };
+
+    image.src = currentImage.previewUrl;
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [currentImage?.id, currentImage?.previewUrl, currentImage]);
 
   const handleWheel: React.WheelEventHandler<HTMLDivElement> = (event) => {
     if (isCropMode || selected === undefined || images.length === 0) return;
@@ -199,6 +231,9 @@ const Editor = ({
         <Toolbar
           handleGenerateCaption={handleGenerateCaption}
           disabled={currentImage === undefined || isApplyingCrop}
+          selectedImageNumber={selected === undefined ? undefined : selected + 1}
+          imageWidth={currentImageDimensions?.width}
+          imageHeight={currentImageDimensions?.height}
           isCropMode={isCropMode}
           cropWidth={cropWidth}
           cropHeight={cropHeight}

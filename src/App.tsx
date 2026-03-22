@@ -52,12 +52,26 @@ function App() {
     });
   };
   const handleGenerateAllCaptions = async () => {
-    const totalImages = appState.images.length;
-    for (let index = 0; index < totalImages; index++) {
+    const indicesNeedingCaption = appState.images
+      .map((img, index) => ({ img, index }))
+      .filter(({ img }) => !img.caption.trim())
+      .map(({ index }) => index);
+
+    if (indicesNeedingCaption.length === 0) {
+      dispatch({
+        type: "SET_STATUS",
+        payload: "All images already have captions",
+      });
+      return;
+    }
+
+    const total = indicesNeedingCaption.length;
+    for (let i = 0; i < total; i++) {
+      const index = indicesNeedingCaption[i];
       const image = appState.images[index];
       dispatch({
         type: "SET_STATUS",
-        payload: `Generating caption for image ${index + 1} of ${totalImages}`,
+        payload: `Generating caption ${i + 1} of ${total} (images without captions)`,
       });
       const caption = await generateCaptionWithGemini({
         apiKey: appState.apiKey,
@@ -66,10 +80,10 @@ function App() {
       });
       dispatch({
         type: "SET_CAPTION",
-        payload: { caption, index: index },
+        payload: { caption, index },
       });
     }
-    dispatch({ type: "SET_STATUS", payload: "All captions generated" });
+    dispatch({ type: "SET_STATUS", payload: "All missing captions generated" });
   };
   useEffect(() => {
     const onPaste = (event: ClipboardEvent) => {

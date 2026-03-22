@@ -41,7 +41,7 @@ This app expects your API key to be entered in the UI (it is not read from `.env
 ## How to Use
 
 1. Upload one or more images (or paste an image from clipboard).
-2. Select an image and click **Generate Caption**, or click **Generate all captions**.
+2. Select an image and click **Generate Caption**, or click **Generate all captions** (only images that don’t already have a caption).
 3. Click **Download ZIP** to export files:
    - `0001.jpg`, `0002.jpg`, ...
    - `0001.txt`, `0002.txt`, ... (matching captions)

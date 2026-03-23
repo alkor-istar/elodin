@@ -220,6 +220,7 @@ const Editor = ({
               onZoomChange={setZoom}
               onCropComplete={handleCropComplete}
               showGrid
+              zoomSpeed={0.3}
             />
           </div>
         ) : (
